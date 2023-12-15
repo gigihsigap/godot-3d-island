@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://mcrglnheksor"]
+
+[ext_resource type="Shader" uid="uid://cq60daemusm0l" path="res://shader/water.tres" id="1_henif"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v6mjm"]
+render_priority = 0
+shader = ExtResource("1_henif")
+shader_parameter/ColorParameter = Color(0, 0.266667, 0.533333, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6o26c"]
+material = SubResource("ShaderMaterial_v6mjm")
+size = Vector2(10, 10)
+subdivide_width = 20
+subdivide_depth = 20
+
+[node name="Water" type="Node3D"]
+transform = Transform3D(0.999406, 0, 0, 0, 0.999406, 0, 0, 0, 0.999406, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_6o26c")

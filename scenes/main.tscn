@@ -1,0 +1,135 @@
+[gd_scene load_steps=14 format=3 uid="uid://bqqgyqafm7xwp"]
+
+[ext_resource type="Environment" uid="uid://bqnqgflivjvue" path="res://scenes/main-environment.tres" id="1_ahusb"]
+[ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://objects/player.tscn" id="2_onms2"]
+[ext_resource type="Script" path="res://scripts/view.gd" id="5_bg0fr"]
+[ext_resource type="Script" path="res://scripts/debug_ui.gd" id="7_o87vv"]
+[ext_resource type="PackedScene" uid="uid://mcrglnheksor" path="res://objects/water.tscn" id="8_jrm8e"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="11_apvpm"]
+[ext_resource type="Texture2D" uid="uid://cd7oyc56ehkx1" path="res://sprites/coin.png" id="13_jfda3"]
+[ext_resource type="FontFile" uid="uid://d0cxd77jybrcn" path="res://fonts/lilita_one_regular.ttf" id="17_tk810"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3uo3e"]
+albedo_color = Color(1, 0.2, 0.2, 1)
+metallic = 0.55
+roughness = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_vx5ky"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6p6at"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ubhd0"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_38ys3"]
+font = ExtResource("17_tk810")
+font_size = 48
+shadow_color = Color(0, 0, 0, 0.376471)
+shadow_offset = Vector2(2, 2)
+
+[node name="Main" type="Node3D"]
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = ExtResource("1_ahusb")
+
+[node name="Player" parent="." node_paths=PackedStringArray("view") instance=ExtResource("2_onms2")]
+view = NodePath("../View")
+
+[node name="View" type="Node3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(0.707107, -0.298836, 0.640856, 0, 0.906308, 0.422618, -0.707107, -0.298836, 0.640856, 0, 0, 0)
+script = ExtResource("5_bg0fr")
+target = NodePath("../Player")
+
+[node name="Camera" type="Camera3D" parent="View"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+current = true
+fov = 40.0
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World"]
+transform = Transform3D(2.15442, 8.85109e-09, 0, 3.21033e-08, 0.395991, 2.81435e-08, 6.42066e-08, 5.90072e-09, 1.88867, 0, 2.38419e-07, 9.53674e-07)
+material_override = SubResource("StandardMaterial3D_3uo3e")
+mesh = SubResource("BoxMesh_vx5ky")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_6p6at")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D/StaticBody3D"]
+transform = Transform3D(1, 9.12238e-25, 0, -2.4161e-15, 1, 7.10543e-15, 0, 0, 1, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_ubhd0")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="World"]
+transform = Transform3D(2.12586, 2.75971e-08, 0, 3.16777e-08, 1.23467, 2.72983e-08, 6.33554e-08, 1.8398e-08, 1.83195, -3.55662, 0.221155, -0.0873578)
+material_override = SubResource("StandardMaterial3D_3uo3e")
+mesh = SubResource("BoxMesh_vx5ky")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_6p6at")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D3/StaticBody3D"]
+transform = Transform3D(1, 9.12238e-25, 0, -2.4161e-15, 1, 7.10543e-15, 0, 0, 1, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_ubhd0")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="World"]
+transform = Transform3D(3.31458, -0.159508, 0.0392749, 0.867917, 0.609285, -0.00180938, -0.0428173, 0.0024527, 3.00367, 2.75916, -0.0736759, -0.0257688)
+material_override = SubResource("StandardMaterial3D_3uo3e")
+mesh = SubResource("BoxMesh_vx5ky")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_6p6at")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D2/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_ubhd0")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.422618, -0.694272, 0.582564, 0, 0.642788, 0.766044, -0.906308, 0.323744, -0.271654, 0, 0, 0)
+shadow_enabled = true
+shadow_opacity = 0.75
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("11_apvpm")
+
+[node name="Icon" type="TextureRect" parent="HUD"]
+offset_left = 57.0
+offset_top = 67.0
+offset_right = 313.0
+offset_bottom = 323.0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_jfda3")
+
+[node name="x" type="Label" parent="HUD"]
+offset_left = 112.0
+offset_top = 64.0
+offset_right = 144.0
+offset_bottom = 123.0
+text = "×"
+label_settings = SubResource("LabelSettings_38ys3")
+
+[node name="Coins" type="Label" parent="HUD"]
+offset_left = 144.0
+offset_top = 64.0
+offset_right = 368.0
+offset_bottom = 123.0
+text = "0"
+label_settings = SubResource("LabelSettings_38ys3")
+
+[node name="DebugUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("7_o87vv")
+
+[node name="Label" type="Label" parent="DebugUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Water" parent="." instance=ExtResource("8_jrm8e")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+
+[connection signal="coin_collected" from="Player" to="HUD" method="_on_coin_collected"]
